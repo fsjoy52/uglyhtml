@@ -2,7 +2,7 @@
 一个丑陋的本地网址导航页面
 #### 本地网址导航
 ![本地网址导航页面预览](https://github.com/user-attachments/assets/d43e6388-43e7-4fdf-91df-67b717354495)
-#### 你也可以在使用前观看 Youtube 视频详细了解他。https://www.youtube.com/watch?v=OQWv-z_ajaA
+##### 你可以在使用前观看 Youtube 视频详细了解他。https://www.youtube.com/watch?v=OQWv-z_ajaA
 ##### 如果你想使用他可以直接下载 本地网址导航.html 和网 址数据示例.json ,打开 Html 文件，导入示例数据就可以看到截图效果了
 
 ##### 1.功能特点
