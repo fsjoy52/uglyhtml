@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本地网址导航</title>
+    <style>
+        /* Existing styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ddd;
+        }
+        header {
+            background-color: #2196f3;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .category {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .category h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #007bff;
+            cursor: pointer;
+        }
+        .category p {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .category ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .category li {
+            width: calc(15% - 10px);
+            margin-bottom: 14px;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            cursor: pointer;
+        }
+        .category li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+        }
+        .category li .website-info {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+        .category li:hover {
+            background-color: #e9ecef;
+        }
+        .add-category {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .add-category input[type="text"],
+        .add-category textarea {
+            width: 200px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        .add-category textarea {
+            width: 300px;
+            height: 34px;
+            resize: vertical;
+            line-height: 1.4;
+        }
+        .add-category button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        .add-category button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .add-website-form {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .add-website-form.active {
+            display: flex;
+        }
+        .add-website-form input[type="text"],
+        .add-website-form textarea {
+            width: 200px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        .add-website-form textarea {
+            width: 300px;
+            height: 34px;
+            resize: vertical;
+            line-height: 1.4;
+        }
+        .add-website-form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        .add-website-form button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .dropdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: none;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            z-index: 1;
+        }
+        .dropdown a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+        .dropdown a:hover {
+            background-color: #f1f1f1;
+        }
+        .dots {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #333;
+        }
+
+        /* New styles for search box */
+        .search-container {
+            margin: 20px auto;
+            max-width: 800px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        @media (max-width: 600px) {
+            .category li {
+                width: calc(50% - 10px);
+            }
+            .add-category input[type="text"],
+            .add-category textarea,
+            .add-website-form input[type="text"],
+            .add-website-form textarea {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        a:hover,
+        a:focus {
+            text-decoration: underline;
+        }
+        .import-export-container {
+            margin: 10px auto;
+            max-width: 2000px;
+            padding: 0 5px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .import-export-container button,
+        .import-export-container input[type="file"] {
+            margin-left: 10px;
+        }
+        @media (max-width: 600px) {
+            .category li {
+                width: calc(50% - 10px);
+            }
+            .add-category input[type="text"],
+            .add-category textarea,
+            .add-website-form input[type="text"],
+            .add-website-form textarea {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        a:hover,
+        a:focus {
+            text-decoration: underline;
+        }
+        footer {
+            padding: 20px 20px;
+            background-color: var(--card-background);
+            border-top: 1px solid var(--card-border);
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 -4px 8px var(--card-shadow);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        footer a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: var(--link-hover-color);
+            text-decoration: underline;
+        }
+         /* Dark mode styles */
+        body.dark-mode {
+            background-color: #333;
+            color: #ddd;
+        }
+        body.dark-mode header {
+            background-color: #1e1e1e;
+        }
+        body.dark-mode .container {
+            background-color: #444;
+            color: #ddd;
+        }
+        body.dark-mode .category {
+            border-color: #555;
+        }
+        body.dark-mode .category li {
+            background-color: #ddd;
+            color: #FFF;
+        }
+        body.dark-mode .category li:hover {
+            background-color: #666;
+        }
+        body.dark-mode .search-container input {
+            background-color: #fff;
+            color: #ddd;
+            border-color: #777;
+        }
+        body.dark-mode .dropdown {
+            background-color: #444;
+        }
+        body.dark-mode footer {
+            background-color: #1e1e1e;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>本地网址导航</h1>
+    </header>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="请输入网站关键词进行搜索" oninput="searchWebsites()">
+        <div class="import-export-container">
+        <button onclick="exportData()">导出数据</button>
+        <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+    </div>
+    </div>
+    <div class="container">
+        <div id="categories" role="list">
+            <!-- Categories will be dynamically added here -->
+        </div>
+        <div class="add-category">
+            <input type="text" id="newCategoryName" placeholder="输入分类名称" aria-label="输入分类名称">
+            <textarea id="newCategoryDesc" placeholder="输入分类描述" aria-label="输入分类描述"></textarea>
+            <button onclick="addCategory()" aria-label="添加分类">添加分类</button>
+        </div>
+    </div>
+
+    <script>
+        // Load categories and websites from localStorage
+        var categories = JSON.parse(localStorage.getItem("categories")) || [];
+
+        // Initialize categories and their respective websites
+        function initCategories() {
+            var categoriesDiv = document.getElementById("categories");
+            categoriesDiv.innerHTML = "";
+
+            categories.forEach(function (category) {
+                var categoryDiv = document.createElement("div");
+                categoryDiv.classList.add("category");
+
+                var h2 = document.createElement("h2");
+                h2.textContent = category.name;
+                h2.setAttribute("tabindex", "0"); // Make category name focusable
+                h2.addEventListener("dblclick", function () {
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.value = category.name;
+                    input.style.border = "none";
+                    input.style.fontSize = "24px";
+                    input.style.outline = "none";
+                    input.style.background = "none";
+                    input.setAttribute("aria-label", "编辑分类名称");
+                    input.addEventListener("blur", function () {
+                        var newName = input.value.trim();
+                        if (newName) {
+                            updateCategoryName(category, newName);
+                            h2.textContent = newName;
+                        }
+                    });
+                    h2.innerHTML = "";
+                    h2.appendChild(input);
+                    input.focus();
+                });
+
+                var addWebsiteButton = document.createElement("button");
+                addWebsiteButton.textContent = "添加网站";
+                addWebsiteButton.onclick = function () {
+                    toggleAddWebsiteForm(categoryDiv);
+                };
+                addWebsiteButton.setAttribute("aria-label", "添加网站");
+                h2.appendChild(addWebsiteButton);
+
+                var removeCategoryButton = document.createElement("button");
+                removeCategoryButton.textContent = "删除分类";
+                removeCategoryButton.onclick = function () {
+                    if (confirm("删除分类将删除该分类下所有网站条目，确认删除此分类吗？")) {
+                        removeCategory(category);
+                    }
+                };
+                removeCategoryButton.setAttribute("aria-label", "删除分类");
+                h2.appendChild(removeCategoryButton);
+
+                categoryDiv.appendChild(h2);
+
+                var p = document.createElement("p");
+                p.textContent = category.description;
+                p.addEventListener("dblclick", function () {
+                    var textarea = document.createElement("textarea");
+                    textarea.value = category.description;
+                    textarea.style.border = "none";
+                    textarea.style.outline = "none";
+                    textarea.style.resize = "none";
+                    textarea.setAttribute("aria-label", "编辑分类描述");
+                    textarea.addEventListener("blur", function () {
+                        var newDesc = textarea.value.trim();
+                        if (newDesc) {
+                            category.description = newDesc;
+                            localStorage.setItem("categories", JSON.stringify(categories));
+                            p.textContent = newDesc;
+                        }
+                    });
+                    p.innerHTML = "";
+                    p.appendChild(textarea);
+                    textarea.focus();
+                });
+                categoryDiv.appendChild(p);
+
+                var ul = document.createElement("ul");
+                ul.style.display = "flex";
+                ul.style.flexWrap = "wrap";
+                ul.style.justifyContent = "space-between";
+                ul.setAttribute("role", "list");
+                category.websites.forEach(function (website) {
+                    var li = document.createElement("li");
+                    li.classList.add("website-item"); // Add class for filtering
+                    li.addEventListener("dblclick", function () {
+                        var input = document.createElement("input");
+                        input.type = "text";
+                        input.value = website.name;
+                        input.style.border = "none";
+                        input.style.fontSize = "16px";
+                        input.style.outline = "none";
+                        input.style.background = "none";
+                        input.setAttribute("aria-label", "编辑网站名称");
+                        input.addEventListener("blur", function () {
+                            var newName = input.value.trim();
+                            if (newName) {
+                                website.name = newName;
+                                localStorage.setItem("categories", JSON.stringify(categories));
+                                a.textContent = newName;
+                            }
+                        });
+                        li.innerHTML = "";
+                        li.appendChild(input);
+                        input.focus();
+                    });
+
+                    var a = document.createElement("a");
+                    a.href = website.url;
+                    a.textContent = website.name;
+                    a.setAttribute("role", "link");
+                    a.setAttribute("tabindex", "0");
+                    a.setAttribute("target", "_blank");
+                    li.appendChild(a);
+
+                    if (website.description) {
+                        var span = document.createElement("span");
+                        span.classList.add("website-info");
+                        span.textContent = website.description;
+                        li.appendChild(span);
+                    }
+
+                    var dots = document.createElement("span");
+                    dots.textContent = "⋮";
+                    dots.className = "dots";
+                    dots.onclick = function (event) {
+                        toggleDropdown(li);
+                        event.stopPropagation();
+                    };
+                    li.appendChild(dots);
+
+                    var dropdown = document.createElement("div");
+                    dropdown.className = "dropdown";
+                    
+                    var editWebsiteLink = document.createElement("a");
+                    editWebsiteLink.textContent = "修改网站";
+                    editWebsiteLink.onclick = function () {
+                        editWebsite(category, website);
+                    };
+                    dropdown.appendChild(editWebsiteLink);
+
+                    var removeWebsiteLink = document.createElement("a");
+                    removeWebsiteLink.textContent = "删除网站";
+                    removeWebsiteLink.onclick = function () {
+                        if (confirm("确认删除这个网站吗？")) {
+                            removeWebsite(category, website);
+                        }
+                    };
+                    dropdown.appendChild(removeWebsiteLink);
+
+                    li.appendChild(dropdown);
+                    ul.appendChild(li);
+                });
+
+                categoryDiv.appendChild(ul);
+
+                var addWebsiteForm = document.createElement("div");
+                addWebsiteForm.classList.add("add-website-form");
+                var nameInput = document.createElement("input");
+                nameInput.type = "text";
+                nameInput.placeholder = "网站名称";
+                nameInput.setAttribute("aria-label", "网站名称");
+                addWebsiteForm.appendChild(nameInput);
+
+                var urlInput = document.createElement("input");
+                urlInput.type = "text";
+                urlInput.placeholder = "网站网址";
+                urlInput.value = "https://www.";
+                urlInput.setAttribute("aria-label", "网站网址");
+                addWebsiteForm.appendChild(urlInput);
+
+                var descInput = document.createElement("textarea");
+                descInput.placeholder = "网站描述";
+                descInput.setAttribute("aria-label", "网站描述");
+                addWebsiteForm.appendChild(descInput);
+
+                var addButton = document.createElement("button");
+                addButton.textContent = "添加";
+                addButton.onclick = function () {
+                    addWebsite(category, nameInput.value, urlInput.value, descInput.value);
+                    nameInput.value = "";
+                    urlInput.value = "https://www.";
+                    descInput.value = "";
+                    toggleAddWebsiteForm(categoryDiv);
+                };
+                addButton.setAttribute("aria-label", "添加网站");
+                addWebsiteForm.appendChild(addButton);
+
+                categoryDiv.appendChild(addWebsiteForm);
+
+                categoriesDiv.appendChild(categoryDiv);
+            });
+        }
+
+        // Toggle the display of the add website form
+        function toggleAddWebsiteForm(categoryDiv) {
+            var addWebsiteForm = categoryDiv.querySelector(".add-website-form");
+            addWebsiteForm.classList.toggle("active");
+        }
+
+        // Toggle the display of the dropdown menu
+        function toggleDropdown(li) {
+            var dropdown = li.querySelector(".dropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        // Add a new category
+        function addCategory() {
+            var categoryName = document.getElementById("newCategoryName").value.trim();
+            var categoryDesc = document.getElementById("newCategoryDesc").value.trim();
+            if (categoryName) {
+                var category = { name: categoryName, description: categoryDesc, websites: [] };
+                categories.push(category);
+                localStorage.setItem("categories", JSON.stringify(categories));
+                document.getElementById("newCategoryName").value = "";
+                document.getElementById("newCategoryDesc").value = "";
+                initCategories();
+            } else {
+                alert("请输入分类名称");
+            }
+        }
+
+        // Remove a category
+        function removeCategory(category) {
+            categories = categories.filter(function (cat) {
+                return cat !== category;
+            });
+            localStorage.setItem("categories", JSON.stringify(categories));
+            initCategories();
+        }
+
+        // Update category name
+        function updateCategoryName(category, newName) {
+            if (newName) {
+                category.name = newName;
+                localStorage.setItem("categories", JSON.stringify(categories));
+            }
+        }
+
+        // Add a new website to a category
+        function addWebsite(category, name, url, description) {
+            if (!isValidURL(url)) {
+                alert("请输入有效的网址");
+                return;
+            }
+            var website = { name: name, url: url, description: description };
+            category.websites.push(website);
+            localStorage.setItem("categories", JSON.stringify(categories));
+            initCategories();
+        }
+
+        // Edit website details
+        function editWebsite(category, website) {
+            var newName = prompt("修改网站名称:", website.name);
+            if (newName !== null) {
+                var newUrl = prompt("修改网站网址:", website.url);
+                if (newUrl !== null) {
+                    var newDescription = prompt("修改网站描述:", website.description);
+                    if (newDescription !== null) {
+                        if (!isValidURL(newUrl)) {
+                            alert("请输入有效的网址");
+                            return;
+                        }
+                        website.name = newName;
+                        website.url = newUrl;
+                        website.description = newDescription;
+                        localStorage.setItem("categories", JSON.stringify(categories));
+                        initCategories();
+                    }
+                }
+            }
+        }
+
+        // Remove a website from a category
+        function removeWebsite(category, website) {
+            category.websites = category.websites.filter(function (web) {
+                return web !== website;
+            });
+            localStorage.setItem("categories", JSON.stringify(categories));
+            initCategories();
+        }
+
+        // Validate URL format
+        function isValidURL(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Hide dropdowns when clicking outside
+        document.addEventListener("click", function(event) {
+            var dropdowns = document.querySelectorAll(".dropdown");
+            dropdowns.forEach(function(dropdown) {
+                if (!dropdown.contains(event.target)) {
+                    dropdown.style.display = "none";
+                }
+            });
+        });
+
+        // Initialize categories on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            initCategories();
+        });
+
+        // Search functionality
+        function searchWebsites() {
+            var input = document.getElementById("searchInput");
+            var filter = input.value.toLowerCase();
+            var categoriesDiv = document.getElementById("categories");
+            var categoryDivs = categoriesDiv.querySelectorAll(".category");
+
+            categoryDivs.forEach(function(categoryDiv) {
+                var websiteItems = categoryDiv.querySelectorAll(".website-item");
+                websiteItems.forEach(function(item) {
+                    var websiteName = item.querySelector("a").textContent.toLowerCase();
+                    if (websiteName.indexOf(filter) > -1) {
+                        item.style.display = "block";
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+            });
+        }
+
+        // Add search box
+        document.addEventListener("DOMContentLoaded", function () {
+            var container = document.querySelector(".container");
+            var searchBox = document.createElement("div");
+            searchBox.classList.add("search-box");
+            
+            var input = document.createElement("input");
+            input.type = "text";
+            input.id = "searchInput";
+            input.placeholder = "搜索网址";
+            input.setAttribute("aria-label", "搜索网址");
+            input.addEventListener("input", searchWebsites);
+            searchBox.appendChild(input);
+
+            container.insertBefore(document.querySelector(".add-category"));
+        });
+               function exportData() {
+            var dataStr = JSON.stringify(categories, null, 2);
+            var blob = new Blob([dataStr], { type: "application/json" });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "categories.json";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        var importedData = JSON.parse(e.target.result);
+                        categories = importedData;
+                        localStorage.setItem("categories", JSON.stringify(categories));
+                        initCategories();
+                    } catch (err) {
+                        alert("导入的数据格式不正确！");
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+    </script>
+
+</body>
+<footer>
+        <p>欢迎关注 
+            <a href="https://www.youtube.com/channel/UC5z70g8sXZkqk9UFABfFhFQ" target="_blank">YouTube @软件雷达</a>
+        </p>
+        <p>
+            <a href="https://space.bilibili.com/52925711" target="_blank">Bilibili @软件雷达</a>
+        </p>
+         <button class="mode-toggle" id="mode-toggle">切换模式</button>
+
+    <script>
+        // Toggle dark mode
+        const modeToggle = document.getElementById('mode-toggle');
+        const currentMode = localStorage.getItem('mode') || 'light';
+
+        if (currentMode === 'dark') {
+            document.body.classList.add('dark-mode');
+            modeToggle.textContent = '切换模式';
+        }
+
+        modeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('mode', 'light');
+                modeToggle.textContent = '深色模式';
+            } else {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('mode', 'dark');
+                modeToggle.textContent = '浅色模式';
+            }
+        });
+    </script>
+    </footer>
+</html>

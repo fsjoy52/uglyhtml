@@ -1,0 +1,105 @@
+[
+  {
+    "name": "常用网站",
+    "description": "一些常用的网站",
+    "websites": [
+      {
+        "name": "全球IP信息查询",
+        "url": "https://ip123.in/",
+        "description": "一个IP查询网站"
+      },
+      {
+        "name": "阿里云",
+        "url": "https://www.aliyun.com/",
+        "description": "阿里云官方网站"
+      },
+      {
+        "name": "腾讯视频",
+        "url": "https://v.qq.com/",
+        "description": "腾讯视频官方站"
+      },
+      {
+        "name": "GitHub",
+        "url": "https://www.github.com/",
+        "description": "全球知名代码托管网站"
+      },
+      {
+        "name": "Yutube",
+        "url": "https://www.yutube.com/",
+        "description": "在线视频网站"
+      },
+      {
+        "name": "B站",
+        "url": "https://www.bilibili.com/",
+        "description": "哔哩哔哩"
+      }
+    ]
+  },
+  {
+    "name": "可用网盘",
+    "description": "一些可用网盘的分享工具",
+    "websites": [
+      {
+        "name": "百度网盘",
+        "url": "https://pan.baidu.com/",
+        "description": "非会员限速，会员真香"
+      },
+      {
+        "name": "阿里云盘",
+        "url": "https://www.alipan.com/",
+        "description": "一言难尽的网盘"
+      },
+      {
+        "name": "蓝奏云盘",
+        "url": "https://www.lanzou.com",
+        "description": "不限容量不限速，但免费账号单文件最大能上传100M"
+      },
+      {
+        "name": "谷歌云端硬盘",
+        "url": "https://drive.google.com/",
+        "description": "免费账号15G空间，分享有流量配额，对国内用户不友好"
+      },
+      {
+        "name": "Filen网盘",
+        "url": "https://drive.filen.io/",
+        "description": "德国网盘，端到端加密，免费用户最多能到50G容量"
+      }
+    ]
+  },
+  {
+    "name": "人工智能",
+    "description": "运行一些人工智能项目常用的软件",
+    "websites": [
+      {
+        "name": "Python",
+        "url": "https://www.python.org/downloads/",
+        "description": "Python官方下载页面"
+      },
+      {
+        "name": "Anaconda",
+        "url": "https://www.anaconda.com/download/success",
+        "description": "开源的Python发行版本，轻松管理受信任的包和环境"
+      },
+      {
+        "name": "Git",
+        "url": "https://git-scm.com/downloads",
+        "description": "开源的分布式版本控制系统"
+      },
+      {
+        "name": "CUDA Toolkit",
+        "url": "https://developer.nvidia.com/cuda-downloads",
+        "description": "英伟达提供的创建高性能、GPU 加速应用程序的开发环境"
+      },
+      {
+        "name": "Pytorch",
+        "url": "https://pytorch.org/",
+        "description": "用于机器学习和深度学习的开源深度学习框架"
+      },
+      {
+        "name": "cuDNN",
+        "url": "https://developer.nvidia.com/cudnn-downloads",
+        "description": "为深度学习设计的GPU加速库"
+      }
+    ]
+  }
+]
